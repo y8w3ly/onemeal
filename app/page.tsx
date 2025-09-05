@@ -343,11 +343,11 @@ export default function OneMealApp() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* ... existing header code ... */}
+      {/* Header */}
       <header className="bg-primary text-primary-foreground shadow-xl border-b-4 border-secondary">
-        <div className="p-4 sm:p-6 text-center">
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-2">
-            <div className="relative w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-full p-2 shadow-lg">
+        <div className="p-3 sm:p-4 md:p-6 text-center">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 mb-2">
+            <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-white rounded-full p-1.5 sm:p-2 shadow-lg flex-shrink-0">
               <Image
                 src="/images/one-meal-logo.png"
                 alt="One Meal Logo"
@@ -356,8 +356,8 @@ export default function OneMealApp() {
                 className="w-full h-full object-contain"
               />
             </div>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-wide">
+            <div className="min-w-0">
+              <h1 className="text-lg sm:text-2xl md:text-3xl font-bold tracking-wide">
                 <span className="text-white">oNe</span>
                 <span className="text-secondary"> meal.</span>
               </h1>
@@ -369,38 +369,40 @@ export default function OneMealApp() {
         </div>
       </header>
 
-      <main className="flex-1 p-3 sm:p-6 pb-24 bg-gradient-to-br from-background to-muted/30">
+      <main className="flex-1 p-2 sm:p-4 md:p-6 pb-20 sm:pb-24 bg-gradient-to-br from-background to-muted/30">
         <Card className="shadow-xl border-0 bg-card/95 backdrop-blur-sm">
-          <div className="p-4 sm:p-8">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-              <div className="flex items-center gap-3">
+          <div className="p-3 sm:p-6 md:p-8">
+            <div className="flex flex-col gap-3 sm:gap-4 mb-4 sm:mb-6">
+              <div className="flex items-center gap-2 sm:gap-3">
                 {(() => {
                   const currentSection = sections.find((s) => s.id === activeSection)
                   const Icon = currentSection?.icon || ChefHat
                   return (
                     <>
-                      <div className="p-2 sm:p-3 bg-primary/10 rounded-xl">
-                        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                      <div className="p-2 bg-primary/10 rounded-xl flex-shrink-0">
+                        <Icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-primary" />
                       </div>
-                      <div>
-                        <h2 className="text-xl sm:text-2xl font-bold text-card-foreground">{currentSection?.label}</h2>
+                      <div className="min-w-0">
+                        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-card-foreground truncate">
+                          {currentSection?.label}
+                        </h2>
                         <p className="text-xs sm:text-sm text-muted-foreground">Gestion des horaires et salaires</p>
                       </div>
                     </>
                   )
                 })()}
               </div>
-              <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
+              <div className="flex gap-2 w-full">
                 <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
                   <DialogTrigger asChild>
                     <Button
-                      size="lg"
-                      className="flex-1 sm:flex-none bg-secondary hover:bg-secondary/90 shadow-lg hover:shadow-xl transition-all duration-200 text-sm sm:text-base"
+                      size="sm"
+                      className="flex-1 bg-secondary hover:bg-secondary/90 shadow-lg hover:shadow-xl transition-all duration-200 text-xs sm:text-sm h-9 sm:h-10"
                       onClick={() => {
                         setTempPayRates({ morning: 50, evening: 50 })
                       }}
                     >
-                      <Plus size={16} className="mr-1 sm:mr-2" />
+                      <Plus size={14} className="mr-1" />
                       Ajouter
                     </Button>
                   </DialogTrigger>
@@ -613,12 +615,12 @@ export default function OneMealApp() {
                 </Dialog>
 
                 <Button
-                  size="lg"
-                  className="flex-1 sm:flex-none bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 disabled:bg-gray-300 disabled:text-gray-500 text-sm sm:text-base"
+                  size="sm"
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 disabled:bg-gray-300 disabled:text-gray-500 text-xs sm:text-sm h-9 sm:h-10"
                   onClick={clearAllShifts}
                   disabled={currentData.employees.length === 0}
                 >
-                  <Trash2 size={16} className="mr-1 sm:mr-2" />
+                  <Trash2 size={14} className="mr-1" />
                   Vider
                 </Button>
               </div>
@@ -633,120 +635,214 @@ export default function OneMealApp() {
                 <p className="text-sm">Cliquez sur "Ajouter" pour commencer la gestion des horaires</p>
               </div>
             ) : (
-              <div className="overflow-x-auto rounded-xl border border-border">
-                <table className="w-full border-collapse bg-background min-w-[800px]">
-                  <thead>
-                    <tr className="bg-muted/50">
-                      <th className="text-left p-3 sm:p-4 font-semibold text-card-foreground border-b border-border sticky left-0 bg-muted/50 min-w-[140px]">
-                        Employé
-                      </th>
-                      {weekdays.map((day) => (
-                        <th
-                          key={day.key}
-                          className="text-center p-2 sm:p-4 font-semibold text-card-foreground border-b border-border min-w-[140px]"
+              <div className="space-y-3 sm:space-y-4">
+                {/* Mobile Card Layout */}
+                <div className="block sm:hidden space-y-3">
+                  {currentData.employees.map((employee, index) => (
+                    <Card key={employee.id} className="p-3 bg-background border border-border/50">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-sm truncate">{employee.name}</h3>
+                          <p className="text-xs text-muted-foreground">
+                            M: {employee.payRates.morning.toLocaleString()} | S:{" "}
+                            {employee.payRates.evening.toLocaleString()} | D:{" "}
+                            {employee.payRates.double.toLocaleString()} DZD
+                          </p>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => openEditDialog(employee)}
+                          className="p-1 h-8 w-8 hover:bg-muted/50 flex-shrink-0"
                         >
-                          <div className="flex flex-col gap-1">
-                            <span className="text-sm sm:text-base">{day.label}</span>
-                            <span className="text-xs text-muted-foreground font-normal">Shift / Acompte</span>
-                          </div>
-                        </th>
-                      ))}
-                      <th className="text-center p-3 sm:p-4 font-semibold text-card-foreground border-b border-border min-w-[120px]">
-                        Total
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentData.employees.map((employee, index) => (
-                      <tr
-                        key={employee.id}
-                        className={`hover:bg-muted/30 transition-colors ${index % 2 === 0 ? "bg-background" : "bg-muted/10"}`}
-                      >
-                        <td className="p-3 sm:p-4 font-semibold text-card-foreground border-b border-border/50 sticky left-0 bg-inherit">
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="text-sm sm:text-base">{employee.name}</span>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={() => openEditDialog(employee)}
-                              className="p-1 h-8 w-8 hover:bg-muted/50"
-                            >
-                              <Edit size={14} className="text-muted-foreground hover:text-primary" />
-                            </Button>
-                          </div>
-                          <div className="text-xs text-muted-foreground mt-1">
-                            M: {employee.payRates.morning} | S: {employee.payRates.evening} | D:{" "}
-                            {employee.payRates.double} DZD
-                          </div>
-                        </td>
+                          <Edit size={14} className="text-muted-foreground hover:text-primary" />
+                        </Button>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 mb-3">
                         {weekdays.map((day) => (
-                          <td key={day.key} className="p-2 border-b border-border/50">
-                            <div className="flex flex-col gap-2">
-                              <Select
-                                value={employee.shifts[day.key as keyof Employee["shifts"]] || "N/A"}
-                                onValueChange={(value) =>
-                                  updateShift(employee.id, day.key as keyof Employee["shifts"], value as ShiftType)
-                                }
-                              >
-                                <SelectTrigger className="w-full h-9 text-xs sm:text-sm">
-                                  <SelectValue placeholder="-" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="N/A">-</SelectItem>
-                                  <SelectItem value="Matin">Matin</SelectItem>
-                                  <SelectItem value="Soir">Soir</SelectItem>
-                                  <SelectItem value="Doublé">Doublé</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <div className="flex items-center gap-1">
-                                <div className="relative flex-1">
-                                  <Input
-                                    type="number"
-                                    value={employee.acomptes[day.key as keyof Employee["acomptes"]]}
-                                    onChange={(e) =>
-                                      updateDailyAcompte(
-                                        employee.id,
-                                        day.key as keyof Employee["acomptes"],
-                                        Number(e.target.value),
-                                      )
-                                    }
-                                    className="w-full h-9 text-xs pr-8"
-                                    placeholder="0"
-                                  />
-                                  <span className="absolute right-1 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-                                    DZD
-                                  </span>
-                                </div>
-                                <Button
-                                  type="button"
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => incrementAcompte(employee.id, day.key as keyof Employee["acomptes"])}
-                                  className="px-2 py-1 h-9 w-9 bg-secondary/10 hover:bg-secondary/20 border-secondary/30"
-                                >
-                                  <ArrowUp size={12} className="text-secondary" />
-                                </Button>
+                          <div key={day.key} className="space-y-1">
+                            <Label className="text-xs font-medium">{day.label}</Label>
+                            <Select
+                              value={employee.shifts[day.key as keyof Employee["shifts"]] || "N/A"}
+                              onValueChange={(value) =>
+                                updateShift(employee.id, day.key as keyof Employee["shifts"], value as ShiftType)
+                              }
+                            >
+                              <SelectTrigger className="w-full h-8 text-xs">
+                                <SelectValue placeholder="-" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="N/A">-</SelectItem>
+                                <SelectItem value="Matin">Matin</SelectItem>
+                                <SelectItem value="Soir">Soir</SelectItem>
+                                <SelectItem value="Doublé">Doublé</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <div className="flex items-center gap-1">
+                              <div className="relative flex-1">
+                                <Input
+                                  type="number"
+                                  value={employee.acomptes[day.key as keyof Employee["acomptes"]]}
+                                  onChange={(e) =>
+                                    updateDailyAcompte(
+                                      employee.id,
+                                      day.key as keyof Employee["acomptes"],
+                                      Number(e.target.value),
+                                    )
+                                  }
+                                  className="w-full h-8 text-xs pr-8"
+                                  placeholder="0"
+                                />
+                                <span className="absolute right-1 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                                  DZD
+                                </span>
                               </div>
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                onClick={() => incrementAcompte(employee.id, day.key as keyof Employee["acomptes"])}
+                                className="px-1 py-1 h-8 w-8 bg-secondary/10 hover:bg-secondary/20 border-secondary/30 flex-shrink-0"
+                              >
+                                <ArrowUp size={12} className="text-secondary" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="pt-2 border-t border-border/50">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium">Total:</span>
+                          <span className="font-bold text-lg text-secondary bg-white border-2 border-secondary px-3 py-1 rounded-full whitespace-nowrap">
+                            {calculateTotalPay(employee).toLocaleString()} DZD
+                          </span>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+
+                {/* Desktop Table Layout */}
+                <div className="hidden sm:block overflow-x-auto rounded-xl border border-border">
+                  <table className="w-full border-collapse bg-background">
+                    <thead>
+                      <tr className="bg-muted/50">
+                        <th className="text-left p-3 md:p-4 font-semibold text-card-foreground border-b border-border sticky left-0 bg-muted/50 min-w-[180px] max-w-[200px]">
+                          Employé
+                        </th>
+                        {weekdays.map((day) => (
+                          <th
+                            key={day.key}
+                            className="text-center p-2 md:p-3 font-semibold text-card-foreground border-b border-border min-w-[140px]"
+                          >
+                            <div className="flex flex-col gap-1">
+                              <span className="text-sm">{day.label}</span>
+                              <span className="text-xs text-muted-foreground font-normal">Shift / Acompte</span>
+                            </div>
+                          </th>
+                        ))}
+                        <th className="text-center p-3 md:p-4 font-semibold text-card-foreground border-b border-border min-w-[140px]">
+                          Total
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentData.employees.map((employee, index) => (
+                        <tr
+                          key={employee.id}
+                          className={`hover:bg-muted/30 transition-colors ${index % 2 === 0 ? "bg-background" : "bg-muted/10"}`}
+                        >
+                          <td className="p-3 md:p-4 font-semibold text-card-foreground border-b border-border/50 sticky left-0 bg-inherit min-w-[180px] max-w-[200px]">
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="flex-1 min-w-0">
+                                <div className="text-sm font-semibold truncate">{employee.name}</div>
+                                <div className="text-xs text-muted-foreground mt-1 break-words">
+                                  M: {employee.payRates.morning.toLocaleString()} | S:{" "}
+                                  {employee.payRates.evening.toLocaleString()} | D:{" "}
+                                  {employee.payRates.double.toLocaleString()} DZD
+                                </div>
+                              </div>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => openEditDialog(employee)}
+                                className="p-1 h-8 w-8 hover:bg-muted/50 flex-shrink-0"
+                              >
+                                <Edit size={14} className="text-muted-foreground hover:text-primary" />
+                              </Button>
                             </div>
                           </td>
-                        ))}
-                        <td className="p-3 sm:p-4 text-center border-b border-border/50">
-                          <span className="font-bold text-sm sm:text-lg text-secondary bg-white border-2 border-secondary px-2 sm:px-3 py-1 rounded-full">
-                            {calculateTotalPay(employee)} DZD
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                          {weekdays.map((day) => (
+                            <td key={day.key} className="p-2 border-b border-border/50">
+                              <div className="flex flex-col gap-2">
+                                <Select
+                                  value={employee.shifts[day.key as keyof Employee["shifts"]] || "N/A"}
+                                  onValueChange={(value) =>
+                                    updateShift(employee.id, day.key as keyof Employee["shifts"], value as ShiftType)
+                                  }
+                                >
+                                  <SelectTrigger className="w-full h-9 text-xs">
+                                    <SelectValue placeholder="-" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="N/A">-</SelectItem>
+                                    <SelectItem value="Matin">Matin</SelectItem>
+                                    <SelectItem value="Soir">Soir</SelectItem>
+                                    <SelectItem value="Doublé">Doublé</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <div className="flex items-center gap-1">
+                                  <div className="relative flex-1">
+                                    <Input
+                                      type="number"
+                                      value={employee.acomptes[day.key as keyof Employee["acomptes"]]}
+                                      onChange={(e) =>
+                                        updateDailyAcompte(
+                                          employee.id,
+                                          day.key as keyof Employee["acomptes"],
+                                          Number(e.target.value),
+                                        )
+                                      }
+                                      className="w-full h-9 text-xs pr-10"
+                                      placeholder="0"
+                                    />
+                                    <span className="absolute right-1 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                                      DZD
+                                    </span>
+                                  </div>
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => incrementAcompte(employee.id, day.key as keyof Employee["acomptes"])}
+                                    className="px-2 py-1 h-9 w-9 bg-secondary/10 hover:bg-secondary/20 border-secondary/30 flex-shrink-0"
+                                  >
+                                    <ArrowUp size={12} className="text-secondary" />
+                                  </Button>
+                                </div>
+                              </div>
+                            </td>
+                          ))}
+                          <td className="p-3 md:p-4 text-center border-b border-border/50">
+                            <span className="font-bold text-sm text-secondary bg-white border-2 border-secondary px-2 py-1 rounded-full whitespace-nowrap">
+                              {calculateTotalPay(employee).toLocaleString()} DZD
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </div>
         </Card>
       </main>
 
-      {/* ... existing navigation code ... */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-md border-t border-border shadow-2xl">
+      {/* Bottom Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-md border-t border-border shadow-2xl z-50">
         <div className="flex">
           {sections.map((section) => {
             const Icon = section.icon
@@ -756,14 +852,14 @@ export default function OneMealApp() {
               <Button
                 key={section.id}
                 variant="ghost"
-                className={`flex-1 flex flex-col items-center gap-1 sm:gap-2 py-3 sm:py-4 px-2 sm:px-3 rounded-none h-auto transition-all duration-200 min-h-[60px] sm:min-h-[70px] ${
+                className={`flex-1 flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-2 rounded-none h-auto transition-all duration-200 min-h-[56px] sm:min-h-[64px] ${
                   isActive
                     ? "text-primary bg-white hover:bg-gray-50 border-t-2 border-primary shadow-sm"
                     : "text-muted-foreground hover:text-card-foreground hover:bg-muted/30"
                 }`}
                 onClick={() => setActiveSection(section.id)}
               >
-                <Icon size={20} className={`sm:w-6 sm:h-6 ${isActive ? "text-primary" : ""}`} />
+                <Icon size={18} className={`sm:w-5 sm:h-5 ${isActive ? "text-primary" : ""}`} />
                 <span className={`text-xs font-semibold ${isActive ? "text-primary" : ""}`}>{section.label}</span>
               </Button>
             )
